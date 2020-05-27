@@ -103,7 +103,7 @@
                         .then(result => {
                             const _prediction = result.outputs.Labels;
                             let rows = '';
-                            const maxBarWidth = 197;
+                            const maxBarWidth = 217;
                             const minBarOpacity = .15;
                             _prediction.map(row => {
                                 const [label, confidence] = row;
