@@ -104,11 +104,12 @@
                             const _prediction = result.outputs.Labels;
                             let rows = '';
                             const maxBarWidth = 197;
+                            const minBarOpacity = .15;
                             _prediction.map(row => {
                                 const [label, confidence] = row;
                                 const percentage = (confidence * 100).toFixed(0);
                                 const barWidth = confidence * maxBarWidth;
-                                const barOpacity = .15 + confidence * .85;
+                                const barOpacity = minBarOpacity + confidence * (1-minBarOpacity);
                                 rows += `<tr>
                                             <td class="label">${label}</td><td class="percent">${percentage}%</td><td><div class="prediction-bar" style="width: ${barWidth}px; opacity: ${barOpacity}"></div></td>
                                         </tr>`
