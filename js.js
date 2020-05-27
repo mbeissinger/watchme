@@ -18,24 +18,33 @@
     let canvas;
     let prediction;
     let url;
-    let targetLabel;
-    let interval;
-    let audio;
-    
+
     function startup() {
         video       = document.getElementById('video');
         canvas      = document.getElementById('canvas');
         prediction  = document.getElementById('prediction');
         url         = document.getElementById('url');
-        targetLabel = document.getElementById('targetLabel');
-        interval    = document.getElementById('interval');
-        start       = document.getElementById('start');
-
-        audio       = new Audio('donttouch.m4a');
 
         url.value = localStorage.getItem('url');
-        targetLabel.value = localStorage.getItem('targetLabel');
-        interval.value = localStorage.getItem('interval');
+
+        function updateDate(){
+            const currentDate = new Date();
+            const date = currentDate.getDate();
+            const dateString = currentDate.toLocaleDateString(undefined, {month: "short", day: "numeric"});
+            const timeString = currentDate.toLocaleTimeString(undefined, {timeStyle: "short"});
+
+            let superscript = 'th';
+            if (date === 1 || date === 21 || date ===31) {
+                superscript = 'st';
+            } else if (date === 2 || date === 22) {
+                superscript = 'nd';
+            } else if (date === 3 || date === 23) {
+                superscript = 'rd';
+            }
+            document.getElementById('date').innerHTML = `${dateString}<sup>${superscript}</sup>`;
+            document.getElementById('time').innerHTML = `${timeString}`;
+        }
+        setInterval(updateDate, 1000);
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: false })
             .then(function (stream) {
@@ -67,10 +76,12 @@
 
         function predict() {
             let context = canvas.getContext('2d');
+            context.save();
             if (width && height) {
                 canvas.width = width;
                 canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
+                context.scale(-1, 1);
+                context.drawImage(video, 0, 0, width*-1, height);
 
                 let data = canvas.toDataURL('image/jpeg');
 
@@ -89,12 +100,19 @@
                     })
                         .then(result => result.json())
                         .then(result => {
-                            const _prediction = result.outputs.Prediction;
-                            console.log("prediction", result.outputs.Prediction);
-                            prediction.innerHTML = _prediction;
-                            if (_prediction == targetLabel.value) {
-                                audio.play();
-                            }
+                            const _prediction = result.outputs.Labels;
+                            let rows = '';
+                            const maxBarWidth = 200;
+                            _prediction.map(row => {
+                                const [label, confidence] = row;
+                                const percentage = (confidence * 100).toFixed(0);
+                                const barWidth = confidence * maxBarWidth;
+                                const barOpacity = .2 + confidence * .8;
+                                rows += `<tr>
+                                            <td>${label}</td><td class="align-right">${percentage}%</td><td><div class="prediction-bar" style="width: ${barWidth}px; opacity: ${barOpacity}"></div></td>
+                                        </tr>`
+                            });
+                            prediction.innerHTML = rows;
                         })
                         .catch(err => {
                             prediction.innerHTML = err;
@@ -105,37 +123,14 @@
             } else {
                 console.log("couldn't get frame");
             }
+            context.restore();
         }
-
-        let intervalID;
-
-        function updateInterval() {
-            console.log("interval", interval.value);
-            let _interval = parseInt(interval.value);
-            if (!isNaN(_interval) && _interval >= 100) {
-                if (intervalID) {
-                    clearInterval(intervalID);
-                }
-                intervalID = setInterval(predict, _interval);
-            }
-        }
-
-        updateInterval();
+        predict();
+        setInterval(predict, 500);
 
         url.addEventListener('change', ev => {
             console.log("url", ev);
             localStorage.setItem('url', ev.target.value);
-        }, false);
-
-        targetLabel.addEventListener('change', ev => {
-            console.log(ev);
-            localStorage.setItem('targetLabel', ev.target.value);
-        }, false);
-
-        interval.addEventListener('change', ev => {
-            console.log(ev);
-            localStorage.setItem('interval', ev.target.value);
-            updateInterval();
         }, false);
     }
 

@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css.css" type="text/css" media="all">
-    <title>Watch Me</title>
+    <title>Coffee Tracker</title>
     <script src="js.js"></script>
 </head>
 <body>
-    <h1>Watch Me</h1>
-    <div>
-        URL <input id="url" type="text"></input>
-        <br/>
-        Target Label <input id="targetLabel" type="text"></input>
-        <br/>
-        Interval in ms<input id="interval" type="text"></input> (minimum 100)
-    </div>
-    <div class="camera">
-        <video id="video">Video stream not available.</video>
-        <span id="prediction">[no prediction]</span>
+    <div id="container">
+        <div id="live">
+            <div id="header">
+                <div id="date" ></div>
+                <div id="time" ></div>
+            </div>
+            <div>
+                API <input id="url" type="text" />
+            </div>
+            <div id="camera">
+                <video id="video">Video stream not available.</video>
+            </div>
+            <table id="prediction"></table>
+        </div>
+        <div id="graph" >
+            <img id="graphImg" src="graphs.png" />
+        </div>
     </div>
     <canvas id="canvas"></canvas>
 </body>
