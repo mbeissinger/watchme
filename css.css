@@ -23,7 +23,8 @@ body {
 }
 
 #camera {
-  width: 340px;
+  width: 320px;
+  height: 240px;
   display: inline-block;
   margin-top: 15px;
 }
@@ -34,18 +35,17 @@ body {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
-#predictionHeader {
-  margin-top: 15px;
-}
 
 #prediction {
-  margin-top: 5px;
+  margin-top: 10px;
   padding: 0;
   color: hsl(0, 0%, 30%);
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 
 td {
-  padding-bottom: 8px;
+  padding: 0 0 8px;
 }
 
 .percent {
@@ -58,6 +58,10 @@ td {
   height: 30px;
   border-radius: 10px;
   background-color: hsl(169, 100%, 43%);
+}
+
+#graph {
+  margin-left: 30px;
 }
 
 #graphImg {
