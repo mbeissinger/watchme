@@ -118,7 +118,8 @@
                             setTimeout(predict, 100);
                         })
                         .catch(err => {
-                            prediction.innerHTML = err;
+                            prediction.innerHTML = "There was a problem with the prediction API endpoint, see console for error.";
+                            console.log(err);
                             setTimeout(predict, 500);
                         });
                 } else {
