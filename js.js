@@ -76,14 +76,15 @@
 
         function predict() {
             let context = canvas.getContext('2d');
-            context.save();
             if (width && height) {
+                context.save();
                 canvas.width = width;
                 canvas.height = height;
                 context.scale(-1, 1);
                 context.drawImage(video, 0, 0, width*-1, height);
 
                 let data = canvas.toDataURL('image/jpeg');
+                context.restore();
 
                 if (url.value) {
                     fetch(url.value, {
@@ -102,31 +103,33 @@
                         .then(result => {
                             const _prediction = result.outputs.Labels;
                             let rows = '';
-                            const maxBarWidth = 200;
+                            const maxBarWidth = 207;
                             _prediction.map(row => {
                                 const [label, confidence] = row;
                                 const percentage = (confidence * 100).toFixed(0);
                                 const barWidth = confidence * maxBarWidth;
-                                const barOpacity = .2 + confidence * .8;
+                                const barOpacity = .15 + confidence * .85;
                                 rows += `<tr>
-                                            <td>${label}</td><td class="align-right">${percentage}%</td><td><div class="prediction-bar" style="width: ${barWidth}px; opacity: ${barOpacity}"></div></td>
+                                            <td class="label">${label}</td><td class="percent">${percentage}%</td><td><div class="prediction-bar" style="width: ${barWidth}px; opacity: ${barOpacity}"></div></td>
                                         </tr>`
                             });
                             prediction.innerHTML = rows;
+                            setTimeout(predict, 10);
                         })
                         .catch(err => {
                             prediction.innerHTML = err;
+                            setTimeout(predict, 500);
                         });
                 } else {
-                    prediction.innerHTML = "Please supply a valid URL"
+                    prediction.innerHTML = "Please supply a valid URL";
+                    setTimeout(predict, 500);
                 }
             } else {
                 console.log("couldn't get frame");
+                setTimeout(predict, 500);
             }
-            context.restore();
         }
         predict();
-        setInterval(predict, 500);
 
         url.addEventListener('change', ev => {
             console.log("url", ev);
