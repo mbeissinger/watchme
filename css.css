@@ -3,15 +3,19 @@ body {
   font-family: "Lab Grotesque", sans-serif;
 }
 
+.header {
+  font-size: 26px;
+}
+.subheader {
+  font-size: 18px;
+}
+
 #container {
   display: flex;
 }
 
-#live {
-}
-
-#header {
-
+#title {
+  margin-bottom: 30px;
 }
 
 #url {
@@ -21,7 +25,7 @@ body {
 #camera {
   width: 340px;
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 #video {
@@ -30,13 +34,24 @@ body {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
+#predictionHeader {
+  margin-top: 15px;
+}
 
 #prediction {
+  margin-top: 5px;
+  padding: 0;
+  color: hsl(0, 0%, 30%);
+}
+
+td {
+  padding-bottom: 8px;
 }
 
 .percent {
   text-align: right;
   width: 50px;
+  padding-right: 10px;
 }
 
 .prediction-bar {

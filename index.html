@@ -10,16 +10,17 @@
 <body>
     <div id="container">
         <div id="live">
-            <div id="header">
-                <div id="date" ></div>
-                <div id="time" ></div>
+            <div id="title">
+                <div id="date" class="header"></div>
+                <div id="time" class="subheader"></div>
             </div>
             <div>
-                API <input id="url" type="text" />
+                <span>API</span> <input id="url" type="text" />
             </div>
             <div id="camera">
                 <video id="video">Video stream not available.</video>
             </div>
+            <div class="header" id="predictionHeader">Prediction</div>
             <table id="prediction"></table>
         </div>
         <div id="graph" >

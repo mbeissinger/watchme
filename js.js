@@ -103,7 +103,7 @@
                         .then(result => {
                             const _prediction = result.outputs.Labels;
                             let rows = '';
-                            const maxBarWidth = 207;
+                            const maxBarWidth = 197;
                             _prediction.map(row => {
                                 const [label, confidence] = row;
                                 const percentage = (confidence * 100).toFixed(0);
@@ -114,7 +114,7 @@
                                         </tr>`
                             });
                             prediction.innerHTML = rows;
-                            setTimeout(predict, 10);
+                            setTimeout(predict, 100);
                         })
                         .catch(err => {
                             prediction.innerHTML = err;
